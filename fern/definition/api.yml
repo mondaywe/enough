@@ -1,0 +1,13 @@
+name: revert-api
+error-discrimination:
+    strategy: status-code
+environments:
+    Production: https://api.revert.dev
+    Staging:
+        docs: This staging environment is helpful for testing!
+        url: https://api-staging.revert.dev
+    Local: http://localhost:4001
+default-environment: Production
+audiences:
+    - internal
+    - external

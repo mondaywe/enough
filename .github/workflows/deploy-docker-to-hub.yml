@@ -1,0 +1,48 @@
+name: Deploy latest docker image build to hub
+
+on:
+    # push:
+    #     branches:
+    #         - main
+
+    workflow_dispatch:
+        inputs:
+            image:
+                description: 'Enter the latest image tag'
+                required: true
+
+jobs:
+    deploy-docker-to-hub:
+        runs-on: ubuntu-latest
+        if: |
+            ${{ github.ref == 'refs/heads/main' }} &&
+            ${{ github.event_name == 'workflow_dispatch' }}
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+              with:
+                  ref: refs/heads/main
+
+            - name: Docker Login
+              uses: docker/login-action@v3
+              with:
+                  username: ${{ secrets.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_TOKEN }}
+
+            - name: Set environment variables
+              run: |
+                  ls 
+                  pwd
+                  cp .env.example .env
+                  cp packages/backend/.env.example packages/backend/.env
+                  cp packages/client/.env.example packages/client/.env
+                  cp packages/js/.env.example packages/js/.env
+                  cp packages/react/.env.example packages/react/.env
+                  cp packages/vue/.env.example packages/vue/.env
+
+            - name: Build docker images
+              run: docker-compose build --no-cache
+
+            - name: Push docker images to docker hub
+              run: docker-compose push

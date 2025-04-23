@@ -1,0 +1,44 @@
+name: Generate docs & postman collection
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - fern/**
+    workflow_dispatch:
+        inputs:
+            task_name:
+                description: 'Enter the name of the task'
+                required: false
+                default: 'deploy-fern-external'
+
+jobs:
+    deploy-fern-external:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v2
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: 17
+            - name: Install Fern
+              run: npm install -g fern-api
+
+            - name: Install Dependencies
+              run: yarn install
+
+            - name: Generate Production Docs
+              env:
+                  FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
+              run: fern generate --docs --instance revert.docs.buildwithfern.com --log-level debug
+
+            - name: Generate sdks
+              run: fern generate --group external
+              env:
+                  FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}

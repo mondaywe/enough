@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": "./dist",
+        "target": "ES2018",
+        "module": "NodeNext",
+        "lib": ["ESNext", "es2016", "es2017.object", "es2017.string", "DOM"],
+        "strict": true,
+        "skipLibCheck": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": false,
+        "inlineSourceMap": true,
+        "inlineSources": true,
+        "experimentalDecorators": true,
+        "strictPropertyInitialization": false,
+        "esModuleInterop": true,
+        "moduleResolution": "NodeNext",
+        "allowSyntheticDefaultImports": true
+    },
+    "exclude": ["**/node_modules/*.d.ts"]
+}

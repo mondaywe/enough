@@ -1,0 +1,116 @@
+title: Revert | API Docs
+instances:
+    - url: revert.docs.buildwithfern.com
+      custom-domain: docs.revert.dev
+tabs:
+    help:
+        display-name: Overview
+        icon: 'fa-solid fa-globe'
+    api:
+        display-name: API Reference
+        icon: 'fa-solid fa-code'
+    guides:
+        display-name: Integration Guides
+        icon: 'fa-solid fa-book'
+navigation:
+    - tab: help
+      layout:
+          - section: Introduction
+            contents:
+                - page: Getting Started
+                  path: ./docs/contents/intro.mdx
+                - page: Quick Start
+                  path: ./docs/contents/quick-start.mdx
+                - page: How it works
+                  path: ./docs/contents/how-it-works.mdx
+          - section: Developer Guide
+            contents:
+                - page: Rate limits
+                  path: ./docs/contents/rate-limits.mdx
+                - page: Pagination
+                  path: ./docs/contents/pagination.mdx
+                - page: Developer Guide
+                  path: ./docs/contents/developer-guides.mdx
+                - page: Self Host Revert
+                  path: ./docs/contents/docker-compose.mdx
+                - page: API Versioning
+                  path: ./docs/contents/versioning.mdx
+                - page: Webhooks
+                  path: ./docs/contents/webhooks.mdx
+                - page: Contribute an API Integration
+                  path: ./docs/contents/add-integration-guide.mdx
+          - section: Use Cases
+            contents:
+                - page: Use Cases
+                  path: ./docs/contents/usecases.mdx
+          - section: API Integrations Support
+            contents:
+                - page: CRMs
+                  path: ./docs/contents/crm-supported.mdx
+                - page: Messaging tools
+                  path: ./docs/contents/messaging-supported.mdx
+                - page: Ticketing Systems
+                  path: ./docs/contents/ticketing-supported.mdx
+                - page: ATSs
+                  path: ./docs/contents/ats-supported.mdx
+    - tab: api
+      layout:
+          - api: API Reference
+            audiences:
+                - external
+    - tab: guides
+      layout:
+          - section: Integration Guides
+            contents:
+                - page: Pipedrive
+                  path: ./docs/contents/guides/pipedrive.mdx
+                - page: Hubspot
+                  path: ./docs/contents/guides/hubspot.mdx
+                - page: Salesforce
+                  path: ./docs/contents/guides/salesforce.mdx
+                - page: Zoho CRM
+                  path: ./docs/contents/guides/zoho-crm.mdx
+                - page: Close
+                  path: ./docs/contents/guides/close.mdx
+                - page: Slack
+                  path: ./docs/contents/guides/slack.mdx
+                - page: Discord
+                  path: ./docs/contents/guides/discord.mdx
+                - page: Linear
+                  path: ./docs/contents/guides/linear.mdx
+                - page: Clickup
+                  path: ./docs/contents/guides/clickup.mdx
+                - page: Jira
+                  path: ./docs/contents/guides/jira.mdx
+                - page: Trello
+                  path: ./docs/contents/guides/trello.mdx
+                - page: BitBucket
+                  path: ./docs/contents/guides/bitbucket.mdx
+                - page: QuickBooks
+                  path: ./docs/contents/guides/quickbooks.mdx
+                - page: Xero
+                  path: ./docs/contents/guides/xero.mdx
+                - page: Greenhouse
+                  path: ./docs/contents/guides/greenhouse.mdx
+                - page: Lever
+                  path: ./docs/contents/guides/lever.mdx
+                - page: GitHub
+                  path: ./docs/contents/guides/github.mdx
+
+colors:
+    accentPrimary: '#89a3ff'
+logo:
+    dark: ./docs/assets/logo.png
+    light: ./docs/assets/logo.png
+    href: https://revert.dev
+favicon: ./docs/assets/favicon.ico
+navbar-links:
+    - type: secondary
+      text: Star us on Github ⭐
+      url: https://github.com/revertinc/Revert
+    - type: secondary
+      text: Join our discord
+      url: https://discord.gg/q5K5cRhymW
+    - type: primary
+      text: Book a demo
+      url: https://calendly.com/jatin-revert-dev/30min

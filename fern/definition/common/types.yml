@@ -1,0 +1,129 @@
+types:
+    Account:
+        properties:
+            id: string
+            tenant_count: integer
+            private_token: string
+            public_token: string
+            domain: string
+            skipWaitlist: boolean
+            users: optional<list<RevertUser>>
+            apps: optional<list<App>>
+            isOnboardingCompleted: optional<Environment>
+
+    Environment:
+        properties:
+            development: boolean
+            production: boolean
+
+    App:
+        properties:
+            id: string
+            tp_id: TPID
+            scope: optional<list<string>>
+            available_scope: list<string>
+            app_client_id: optional<string>
+            app_client_secret: optional<string>
+            owner_account_public_token: string
+            account: optional<Account>
+            connections: optional<list<Connection>>
+            is_revert_app: boolean
+            app_config: optional<AppConfig>
+
+    RevertUser:
+        properties:
+            id: string
+            domain: string
+            email: string
+            accountId: string
+            account: optional<Account>
+
+    Connection:
+        properties:
+            tp_id: TPID
+            tp_access_token: string
+            tp_refresh_token: optional<string>
+            tp_customer_id: string
+            t_id: string
+            tp_account_url: optional<string>
+            owner_account_public_token: string
+            app_client_id: optional<string>
+            app_client_secret: optional<string>
+            app: optional<App>
+
+    TPID:
+        enum:
+            - hubspot
+            - zohocrm
+            - sfdc
+            - pipedrive
+            - slack
+            - closecrm
+            - ms_dynamics_365_sales
+    StandardObject:
+        enum:
+            - company
+            - contact
+            - deal
+            - event
+            - lead
+            - note
+            - task
+            - user
+    ResponseStatus:
+        enum:
+            - ok
+            - error
+
+    ConnectedApps:
+        properties:
+            appName: string
+            imageSrc: string
+
+    RecentConnections:
+        properties:
+            id: string
+            createdAt: string
+
+    RecentApiCalls:
+        properties:
+            method: string
+            path: string
+            status: integer
+            
+    SummaryApiCalls:
+        properties:
+            date: string
+            numberOfCalls: integer
+
+    Analytics:
+        properties:
+            totalConnections: integer
+            connectedApps: optional<list<ConnectedApps>>
+            recentConnections: optional<list<RecentConnections>>
+            recentApiCalls: optional<list<RecentApiCalls>>
+            totalApiCalls: optional<integer>
+            summaryApiCalls: optional<list<SummaryApiCalls>>
+    TicketStatus:
+        enum:
+            - open
+            - close
+            - in_progress
+    TicketPriority:
+        enum:
+            - urgent
+            - high
+            - medium
+            - low
+            - lowest
+    AppConfig:
+        properties:
+            bot_token: optional<string>
+            org_url: optional<string>
+
+    SvixAccount:
+        properties:
+            uid: optional<string>
+            name: string
+            rateLimit: optional<integer>
+            id: string

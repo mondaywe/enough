@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+imports:
+    errors: common/errors.yml
+
+types:
+    CrmMetadataResponse:
+        properties:
+            status: string
+            data: list<CrmMetadata>
+            error: optional<string>
+
+    CrmMetadata:
+        properties:
+            integrationId: string
+            name: string
+            imageSrc: string
+            status: CrmStatus
+            clientId: optional<string>
+            scopes: list<string>
+    CrmStatus:
+        enum:
+            - active
+            - inactive
+
+service:
+    base-path: ''
+    auth: false
+    headers:
+        x-revert-public-token: string
+    audiences:
+        - external
+    endpoints:
+        getCrms:
+            docs: Retrieve a list of CRMs available for this account from the database based on the public token.
+            method: GET
+            path: /metadata/crms
+            request:
+                name: CrmMetadataRequest
+            response: CrmMetadataResponse
+            errors:
+                - errors.UnAuthorizedError
+                - errors.InternalServerError

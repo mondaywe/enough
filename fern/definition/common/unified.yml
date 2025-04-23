@@ -1,0 +1,294 @@
+imports:
+    associations: ./associations.yml
+    types: ./types.yml
+
+types:
+    CommonUnifiedFields:
+        properties:
+            id:
+                type: string
+                docs: The unique `id` of this object in Revert
+            remoteId:
+                type: string
+                docs: The unique `id` of this object in the downstream CRM.
+            createdTimestamp:
+                type: unknown
+                docs: Creation timestamp of the object.
+            updatedTimestamp:
+                type: unknown
+                docs: The last updated timestamp of the object.
+            additional:
+                type: optional<unknown>
+                docs: Any fields that are not unified yet/non-unifiable come inside this `json` object.
+    LeadRead:
+        properties:
+            firstName:
+                type: string
+                docs: The first name of the lead in a CRM.
+            lastName:
+                type: string
+                docs: The last name of the lead in a CRM.
+            phone:
+                type: string
+                docs: The phone number of the lead in a CRM.
+            email:
+                type: string
+                docs: The email of the lead in a CRM.
+    LeadWrite:
+        extends: LeadRead
+        properties:
+            associations: optional<associations.LeadAssociation>
+    Lead:
+        extends:
+            - CommonUnifiedFields
+            - LeadRead
+    DealRead:
+        properties:
+            amount:
+                type: integer
+                docs: The deal amount mentioned in the CRM for this deal.
+            priority:
+                type: optional<string>
+                docs: The priority attached to this deal. (not supported by pipedrive)
+            stage:
+                type: string
+                docs: Deal stage in the CRM.
+            name:
+                type: string
+                docs: The name of the deal in a CRM.
+            expectedCloseDate:
+                type: unknown
+                docs: Expected close date for this deal. (not supported by pipedrive search api)
+            isWon:
+                type: boolean
+                docs: Is `true` if the deal is closed (won).
+            probability:
+                type: integer
+                docs: Probability of the deal getting closed, a decimal number between 0 to 1 (inclusive).
+    DealWrite:
+        extends: DealRead
+        properties:
+            associations: optional<associations.DealAssociation>
+    Deal:
+        extends:
+            - CommonUnifiedFields
+            - DealRead
+    NoteRead:
+        properties:
+            content:
+                type: string
+                docs: The contents of the note in plain text or HTML.
+    NoteWrite:
+        extends: NoteRead
+        properties:
+            associations: optional<associations.DealAssociation>
+    Note:
+        extends:
+            - CommonUnifiedFields
+            - NoteRead
+    Company:
+        extends: CommonUnifiedFields
+        properties:
+            name:
+                type: string
+                docs: Name of the company in a CRM.
+            industry:
+                type: string
+                docs: Industry associated with this company. (not supported by pipedrive)
+            description:
+                type: string
+                docs: Description of the company. (not supported by pipedrive)
+            annualRevenue:
+                type: integer
+                docs: Annual revenue of the company. (not supported by pipedrive)
+            size:
+                type: integer
+                docs: Number of employees or size of the company.
+            phone:
+                type: string
+                docs: Phone number of the company. (not supported by pipedrive)
+            address:
+                type: CompanyAddress
+                docs: Company address.
+    CompanyAddress:
+        properties:
+            street: optional<string>
+            city: string
+            state: string
+            country: string
+            zip: string
+            postalCode: string
+    ContactRead:
+        properties:
+            firstName:
+                type: string
+                docs: The first name of the contact in a CRM.
+            lastName:
+                type: string
+                docs: The last name of the contact in a CRM.
+            phone:
+                type: string
+                docs: The phone number of the contact in a CRM.
+            email:
+                type: string
+                docs: The email of the contact in a CRM.
+    ContactWrite:
+        extends: ContactRead
+        properties:
+            associations: optional<associations.ContactAssociation>
+    Contact:
+        extends:
+            - CommonUnifiedFields
+            - ContactRead
+    EventRead:
+        properties:
+            type:
+                type: string
+                docs: The type of the event in the CRM.
+            subject:
+                type: string
+                docs: The Subject of the event/meeting in the CRM.
+            startDateTime:
+                type: string
+                docs: Event start date time.
+            endDateTime:
+                type: string
+                docs: Event end date time.
+            isAllDayEvent:
+                type: boolean
+                docs: Is `true` if the event is an all day event.
+            description:
+                type: string
+                docs: Description of the event/meeting.
+            location:
+                type: string
+                docs: The location of the event/meeting.
+    EventWrite:
+        extends: EventRead
+        properties:
+            associations: optional<associations.EventAssociation>
+    Event:
+        extends:
+            - CommonUnifiedFields
+            - EventRead
+    TaskRead:
+        properties:
+            subject:
+                type: string
+                docs: Subject of the task.
+            body:
+                type: string
+                docs: Body of the task description.
+            priority:
+                type: string
+                docs: The priority of the task in hand. (not supported by pipedrive)
+            status:
+                type: string
+                docs: Completion status of the task.
+            dueDate:
+                type: unknown
+                docs: The date when this task is due.
+    TaskWrite:
+        properties:
+            associations: optional<associations.TaskAssociation>
+    Task:
+        extends:
+            - CommonUnifiedFields
+            - TaskRead
+    UserWrite:
+        properties:
+            firstName:
+                type: string
+                docs: The first name of a user in a CRM.
+            lastName:
+                type: string
+                docs: The last name of a user in a CRM.
+            phone:
+                type: string
+                docs: The phone number of a user in a CRM.
+            email:
+                type: string
+                docs: The email of a user in a CRM.
+        docs: Include the "businessUnitId" in the "additional" section, as it is a mandatory field for Microsoft Dynamics Sales.
+    User:
+        extends:
+            - CommonUnifiedFields
+            - UserWrite
+    UserChat:
+        properties:
+            id:
+                type: string
+                docs: Id of user according to connected communication app
+            name:
+                type: string
+                docs: The name of user in communication app
+            createdTimestamp:
+                type: unknown
+                docs: Date at which user account has been created
+    Channel:
+        properties:
+            id:
+                type: string
+                docs: Id of channel belonging to workspace
+            name:
+                type: string
+                docs: The name of channel in communication app
+            createdTimestamp:
+                type: unknown
+                docs: Date at which channel has been created
+    Message:
+        properties:
+            text:
+                type: string
+                docs: Message sent by user
+            channelId:
+                type: string
+                docs: Id of channel to which message was sent
+    TaskTicketWrite:
+        properties:
+            name:
+                type: string
+                docs: Name of the task.
+            assignees:
+                type: list<string>
+                docs: collection of IDs belonging to assignees.
+            description:
+                type: string
+                docs: Description of the task.
+            status:
+                type: types.TicketStatus
+                docs: Current status of the task.
+            priority:
+                type: types.TicketPriority
+                docs: Priority of the task.
+            creatorId:
+                type: string
+                docs: ID of the task creator.
+            dueDate:
+                type: string
+                docs: Due date for the given task.
+            completedDate:
+                type: string
+                docs: Date at which task was completed.
+            parentId:
+                type: string
+                docs: Id of the parent task.
+            listId:
+                type: string
+                docs: Id of the list
+    TaskTicket:
+        extends:
+            - CommonUnifiedFields
+            - TaskTicketWrite
+    CommentTicketWrite:
+        properties:
+            body:
+                type: string
+                docs: The contents of the comment in plain text or HTML format.
+            taskId:
+                type: string
+                docs: Task or Issue to which comment must belong
+    CommentTicket:
+        extends:
+            - CommonUnifiedFields
+            - CommentTicketWrite

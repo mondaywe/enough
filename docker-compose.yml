@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: on-failure
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - cache:/data
+  db-seed:
+    build:
+      dockerfile: packages/backend/db-seed.Dockerfile
+      context: "./"
+      args:
+        PGSQL_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DATABASE}
+    image: revertengg/revert-db-seed
+    depends_on:
+      - db
+    profiles: [ "tools" ]
+  ui:
+    build:
+      dockerfile: packages/client/Dockerfile
+      context: "./"
+    image: revertengg/revert-ui-ce
+    env_file:
+      - packages/client/.env
+    ports:
+      - 3000:3000
+  api:
+    build:
+      dockerfile: packages/backend/Dockerfile
+      context: "./"
+      args:
+        PGSQL_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DATABASE}
+        SERVER_PORT: ${SERVER_PORT}
+        REDIS_SERVER_URL: redis://${REDIS_USER}:${REDIS_PASSWORD}@cache:6379
+    image: revertengg/revert-api-ce
+    env_file:
+      - packages/backend/.env
+    ports:
+      - 4001:4001
+    depends_on:
+      db:
+        condition: service_healthy # Wait for db service to be healthy
+      cache:
+        condition: service_started
+
+volumes:
+  pgdata:
+  cache:
